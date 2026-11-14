@@ -5,6 +5,7 @@ import com.alumnisearch.dto.request.AlumniSearchRequest;
 import com.alumnisearch.dto.response.AlumniProfileResponse;
 import com.alumnisearch.dto.response.AlumniStatsResponse;
 import com.alumnisearch.dto.response.ApiResponse;
+import com.alumnisearch.dto.response.SearchHistoryResponse;
 import com.alumnisearch.service.AlumniService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,17 +20,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/alumni")
 @RequiredArgsConstructor
-@Tag(name = "Alumni Profile Searcher", description = "Operations for searching, persisting, and querying LinkedIn alumni profiles")
+@Tag(name = "Alumni Profile Searcher", description = "Operations for searching, persisting, exporting, and querying LinkedIn alumni profiles")
 public class AlumniSearchController {
 
     private final AlumniService alumniService;
@@ -118,8 +121,8 @@ public class AlumniSearchController {
     public ResponseEntity<ApiResponse<List<AlumniProfileResponse>>> getAllSavedAlumni(
             @Parameter(description = "Zero-based page index", example = "0")
             @RequestParam(defaultValue = "0") int page,
-            @Parameter(description = "Page size", example = "20")
-            @RequestParam(defaultValue = "20") int size,
+            @Parameter(description = "Page size", example = "50")
+            @RequestParam(defaultValue = "50") int size,
             @Parameter(description = "Sort property", example = "createdAt")
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @Parameter(description = "Sort direction: ASC or DESC", example = "DESC")
@@ -146,6 +149,16 @@ public class AlumniSearchController {
         return ResponseEntity.ok(ApiResponse.success(profile));
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Update / Enrich Alumni Profile", description = "Updates details of a saved alumni profile")
+    public ResponseEntity<ApiResponse<AlumniProfileResponse>> updateAlumni(
+            @PathVariable Long id,
+            @RequestBody AlumniProfileResponse updateRequest) {
+
+        AlumniProfileResponse updated = alumniService.updateAlumni(id, updateRequest);
+        return ResponseEntity.ok(ApiResponse.success(updated, "Profile updated successfully"));
+    }
+
     @GetMapping("/filter")
     @Operation(summary = "Filter Saved Alumni Profiles", description = "Dynamic multi-criteria search over saved alumni records")
     public ResponseEntity<ApiResponse<List<AlumniProfileResponse>>> filterAlumni(
@@ -155,7 +168,7 @@ public class AlumniSearchController {
             @Parameter(description = "Location filter") @RequestParam(required = false) String location,
             @Parameter(description = "Alumni name filter") @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "50") int size) {
 
         AlumniFilterCriteria criteria = AlumniFilterCriteria.builder()
                 .university(university)
@@ -178,10 +191,34 @@ public class AlumniSearchController {
         return ResponseEntity.ok(ApiResponse.success(stats));
     }
 
+    @GetMapping("/history")
+    @Operation(summary = "Recent Search Audit History", description = "Returns the 20 most recent alumni searches and execution durations")
+    public ResponseEntity<ApiResponse<List<SearchHistoryResponse>>> getSearchHistory() {
+        List<SearchHistoryResponse> history = alumniService.getSearchHistory();
+        return ResponseEntity.ok(ApiResponse.success(history));
+    }
+
+    @GetMapping(value = "/export", produces = "text/csv")
+    @Operation(summary = "Export Alumni to CSV", description = "Streams all persisted alumni records as a CSV file for ATS/Spreadsheet analysis")
+    public ResponseEntity<byte[]> exportCsv() {
+        byte[] csvData = alumniService.exportAlumniCsv();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"alumni_profiles.csv\"")
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(csvData);
+    }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete Saved Alumni Profile", description = "Deletes an alumni record by its database ID")
     public ResponseEntity<ApiResponse<Void>> deleteAlumni(@PathVariable Long id) {
         alumniService.deleteAlumni(id);
         return ResponseEntity.ok(ApiResponse.success(null, "Alumni profile " + id + " deleted successfully"));
+    }
+
+    @PostMapping("/webhook")
+    @Operation(summary = "PhantomBuster Webhook Handler", description = "Receives asynchronous execution callbacks when a Phantom completes")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> handleWebhook(@RequestBody(required = false) Map<String, Object> payload) {
+        log.info("Received PhantomBuster webhook payload: {}", payload);
+        return ResponseEntity.ok(ApiResponse.success(Map.of("status", "received"), "Webhook processed"));
     }
 }

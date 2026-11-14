@@ -7,7 +7,7 @@
     <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -22,6 +22,8 @@
             --border: #e0e0e0;
             --success: #057642;
             --success-bg: #e6f4ea;
+            --danger: #d11a2a;
+            --danger-bg: #fde8e8;
             --radius: 12px;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -67,13 +69,14 @@
         .brand-icon {
             background: var(--primary);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
+            box-shadow: 0 2px 8px rgba(10, 102, 194, 0.3);
         }
 
         .brand-text h1 {
@@ -90,7 +93,7 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .status-badge {
@@ -119,27 +122,42 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(5, 118, 66, 0); }
         }
 
-        .nav-link {
+        .nav-btn {
             text-decoration: none;
             color: var(--primary);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 12px;
+            padding: 7px 12px;
             border-radius: 8px;
-            transition: background 0.2s;
+            border: 1px solid #d0dbe5;
+            background: #ffffff;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
-        .nav-link:hover {
+        .nav-btn:hover {
             background: #eef3f8;
+            border-color: var(--primary);
+        }
+
+        .btn-export {
+            background: #057642;
+            color: white;
+            border: none;
+        }
+
+        .btn-export:hover {
+            background: #045d34;
+            color: white;
         }
 
         /* Container */
         .main-container {
-            max-width: 1200px;
-            margin: 32px auto;
+            max-width: 1240px;
+            margin: 30px auto;
             padding: 0 20px;
             flex: 1;
             width: 100%;
@@ -149,26 +167,26 @@
         .search-card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 32px;
+            padding: 28px 32px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .search-card-header {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .search-card-header h2 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .search-card-header p {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .form-grid {
@@ -194,7 +212,7 @@
         }
 
         .form-group label .required {
-            color: #d11a2a;
+            color: var(--danger);
         }
 
         .input-wrapper {
@@ -207,12 +225,12 @@
             position: absolute;
             left: 14px;
             color: #8c8c8c;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 14px 12px 40px;
+            padding: 12px 14px 12px 38px;
             border: 1.5px solid var(--border);
             border-radius: 8px;
             font-size: 14px;
@@ -231,9 +249,9 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 13px 28px;
+            padding: 12px 26px;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -289,11 +307,19 @@
             border-color: var(--secondary);
         }
 
-        /* Navigation Tabs */
+        /* Controls bar */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
         .tabs-container {
             display: flex;
             border-bottom: 2px solid var(--border);
-            margin-bottom: 24px;
             gap: 24px;
         }
 
@@ -301,7 +327,7 @@
             background: none;
             border: none;
             padding: 12px 4px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text-muted);
             cursor: pointer;
@@ -330,10 +356,31 @@
         .badge-count {
             background: #eef3f8;
             color: var(--primary);
-            font-size: 12px;
+            font-size: 11px;
             padding: 2px 8px;
             border-radius: 12px;
             font-weight: 700;
+        }
+
+        /* Filter Box for DB View */
+        .filter-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-input {
+            padding: 8px 12px 8px 32px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            width: 240px;
+            background: #ffffff;
+        }
+
+        .filter-input:focus {
+            border-color: var(--primary);
         }
 
         /* Results Grid */
@@ -348,39 +395,38 @@
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 24px;
+            padding: 22px;
             box-shadow: var(--shadow);
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            overflow: hidden;
         }
 
         .alumni-card:hover {
             box-shadow: var(--shadow-hover);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             border-color: #c0d8f0;
         }
 
         .card-top {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             align-items: flex-start;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .avatar {
-            width: 54px;
-            height: 54px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: linear-gradient(135deg, #0a66c2, #0077b5);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             flex-shrink: 0;
             box-shadow: 0 2px 6px rgba(10, 102, 194, 0.25);
@@ -392,7 +438,7 @@
         }
 
         .profile-name {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-main);
             margin-bottom: 4px;
@@ -402,7 +448,7 @@
         }
 
         .profile-role {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--primary);
             margin-bottom: 6px;
@@ -412,12 +458,12 @@
         }
 
         .profile-meta {
-            font-size: 13px;
+            font-size: 12.5px;
             color: var(--text-muted);
             display: flex;
             flex-direction: column;
             gap: 4px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .meta-item {
@@ -429,27 +475,33 @@
         .meta-item i {
             color: #8c8c8c;
             width: 14px;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .headline-box {
             background: #f8fafc;
             border-left: 3px solid var(--primary);
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 0 6px 6px 0;
-            font-size: 13px;
+            font-size: 12.5px;
             color: #333333;
             font-style: italic;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             line-height: 1.4;
         }
 
         .card-footer {
             border-top: 1px solid #f0f0f0;
-            padding-top: 14px;
+            padding-top: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .db-badge {
@@ -457,7 +509,7 @@
             font-weight: 600;
             color: var(--success);
             background: var(--success-bg);
-            padding: 4px 8px;
+            padding: 3px 8px;
             border-radius: 4px;
             display: flex;
             align-items: center;
@@ -468,9 +520,9 @@
             background: #eef3f8;
             color: var(--primary);
             text-decoration: none;
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
@@ -481,6 +533,22 @@
         .linkedin-btn:hover {
             background: var(--primary);
             color: white;
+        }
+
+        .btn-delete-card {
+            background: none;
+            border: 1px solid #f2dede;
+            color: #d11a2a;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-delete-card:hover {
+            background: var(--danger-bg);
+            border-color: var(--danger);
         }
 
         /* Stats Section */
@@ -501,7 +569,7 @@
         }
 
         .stat-card i {
-            font-size: 28px;
+            font-size: 26px;
             color: var(--primary);
             margin-bottom: 10px;
         }
@@ -514,22 +582,49 @@
         }
 
         .stat-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
+        }
+
+        /* Search History Table */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .history-table th, .history-table td {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .history-table th {
+            background: #fafafa;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .history-table tr:hover {
+            background: #f8fafc;
         }
 
         /* Loading Spinner & Empty State */
         .loading-container {
             display: none;
             text-align: center;
-            padding: 60px 20px;
+            padding: 50px 20px;
         }
 
         .spinner {
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             border: 4px solid #e0e0e0;
             border-top: 4px solid var(--primary);
             border-radius: 50%;
@@ -544,26 +639,26 @@
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 50px 20px;
             background: var(--card-bg);
             border-radius: var(--radius);
             border: 1px dashed var(--border);
         }
 
         .empty-state i {
-            font-size: 48px;
+            font-size: 44px;
             color: #b0c4de;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .empty-state h3 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             margin-bottom: 6px;
         }
 
         .empty-state p {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-muted);
         }
 
@@ -574,10 +669,10 @@
             right: 24px;
             background: #333333;
             color: white;
-            padding: 14px 24px;
+            padding: 14px 22px;
             border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-            font-size: 14px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            font-size: 13.5px;
             font-weight: 500;
             display: flex;
             align-items: center;
@@ -624,10 +719,13 @@
                 <div class="pulse-dot"></div>
                 <span>Backend Connected</span>
             </div>
-            <a href="/swagger-ui/index.html" target="_blank" class="nav-link">
+            <a href="/api/alumni/export" class="nav-btn btn-export" title="Download all profiles as CSV">
+                <i class="fa-solid fa-file-csv"></i> Export CSV
+            </a>
+            <a href="/swagger-ui/index.html" target="_blank" class="nav-btn">
                 <i class="fa-solid fa-code"></i> Swagger UI
             </a>
-            <a href="/h2-console" target="_blank" class="nav-link">
+            <a href="/h2-console" target="_blank" class="nav-btn">
                 <i class="fa-solid fa-database"></i> DB Console
             </a>
         </div>
@@ -640,7 +738,7 @@
         <section class="search-card">
             <div class="search-card-header">
                 <h2>Discover Alumni Profiles</h2>
-                <p>Query alumni by educational institution, professional designation, and graduation year.</p>
+                <p>Search profiles via PhantomBuster API. Discovered alumni are automatically deduplicated and saved to the database.</p>
             </div>
 
             <form id="searchForm">
@@ -692,20 +790,32 @@
             </div>
         </section>
 
-        <!-- Navigation Tabs -->
-        <nav class="tabs-container">
-            <button class="tab-btn active" id="tabSearch" onclick="switchTab('search')">
-                <i class="fa-solid fa-list-check"></i> Latest Search Results
-                <span class="badge-count" id="searchCountBadge">0</span>
-            </button>
-            <button class="tab-btn" id="tabDb" onclick="switchTab('db')">
-                <i class="fa-solid fa-database"></i> Database Directory
-                <span class="badge-count" id="dbCountBadge">0</span>
-            </button>
-            <button class="tab-btn" id="tabStats" onclick="switchTab('stats')">
-                <i class="fa-solid fa-chart-pie"></i> Database Analytics
-            </button>
-        </nav>
+        <!-- Controls Bar with Tabs & Filter -->
+        <div class="controls-bar">
+            <nav class="tabs-container">
+                <button class="tab-btn active" id="tabSearch" onclick="switchTab('search')">
+                    <i class="fa-solid fa-list-check"></i> Latest Search
+                    <span class="badge-count" id="searchCountBadge">0</span>
+                </button>
+                <button class="tab-btn" id="tabDb" onclick="switchTab('db')">
+                    <i class="fa-solid fa-database"></i> Database Directory
+                    <span class="badge-count" id="dbCountBadge">0</span>
+                </button>
+                <button class="tab-btn" id="tabHistory" onclick="switchTab('history')">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Audit History
+                </button>
+                <button class="tab-btn" id="tabStats" onclick="switchTab('stats')">
+                    <i class="fa-solid fa-chart-pie"></i> Database Analytics
+                </button>
+            </nav>
+
+            <div class="filter-box" id="dbFilterBox" style="display: none;">
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-filter"></i>
+                    <input type="text" id="dbFilterInput" class="filter-input" placeholder="Filter saved records...">
+                </div>
+            </div>
+        </div>
 
         <!-- Loading Spinner -->
         <div id="loadingIndicator" class="loading-container">
@@ -734,7 +844,26 @@
             </div>
         </section>
 
-        <!-- Tab Content 3: Stats View -->
+        <!-- Tab Content 3: Audit History View -->
+        <section id="historyView" style="display: none;">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>University</th>
+                        <th>Designation</th>
+                        <th>Year</th>
+                        <th>Results</th>
+                        <th>Latency</th>
+                        <th>Provider</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+            </table>
+        </section>
+
+        <!-- Tab Content 4: Stats View -->
         <section id="statsView" style="display: none;">
             <div class="stats-grid">
                 <div class="stat-card">
@@ -756,11 +885,11 @@
 
             <div class="results-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="search-card" style="margin-bottom: 0;">
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Top Universities</h3>
+                    <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 14px;">Top Universities in DB</h3>
                     <div id="topUniList"></div>
                 </div>
                 <div class="search-card" style="margin-bottom: 0;">
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Top Designations</h3>
+                    <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 14px;">Top Designations in DB</h3>
                     <div id="topRolesList"></div>
                 </div>
             </div>
@@ -792,11 +921,18 @@
         const dbGrid = document.getElementById('dbGrid');
         const dbEmpty = document.getElementById('dbEmpty');
         const dbCountBadge = document.getElementById('dbCountBadge');
+        const dbFilterBox = document.getElementById('dbFilterBox');
+        const dbFilterInput = document.getElementById('dbFilterInput');
 
+        const historyView = document.getElementById('historyView');
+        const historyTableBody = document.getElementById('historyTableBody');
         const statsView = document.getElementById('statsView');
+
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const toastIcon = document.getElementById('toastIcon');
+
+        let savedProfilesCache = [];
 
         // Initial Load
         window.addEventListener('DOMContentLoaded', () => {
@@ -817,7 +953,9 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             searchView.style.display = 'none';
             dbView.style.display = 'none';
+            historyView.style.display = 'none';
             statsView.style.display = 'none';
+            dbFilterBox.style.display = 'none';
 
             if (tab === 'search') {
                 document.getElementById('tabSearch').classList.add('active');
@@ -825,7 +963,12 @@
             } else if (tab === 'db') {
                 document.getElementById('tabDb').classList.add('active');
                 dbView.style.display = 'block';
+                dbFilterBox.style.display = 'flex';
                 fetchSavedAlumni();
+            } else if (tab === 'history') {
+                document.getElementById('tabHistory').classList.add('active');
+                historyView.style.display = 'block';
+                fetchHistory();
             } else if (tab === 'stats') {
                 document.getElementById('tabStats').classList.add('active');
                 statsView.style.display = 'block';
@@ -833,7 +976,7 @@
             }
         }
 
-        // Form Submit Handler
+        // Search Form Submit Handler
         searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -860,6 +1003,8 @@
                 passoutYear: passoutYear
             };
 
+            const startTime = performance.now();
+
             try {
                 const response = await fetch('/api/alumni/search', {
                     method: 'POST',
@@ -868,13 +1013,14 @@
                 });
 
                 const resData = await response.json();
+                const latency = Math.round(performance.now() - startTime);
 
                 if (response.ok && resData.status === 'success') {
                     const profiles = resData.data || [];
                     renderAlumniCards(profiles, searchGrid, searchEmpty);
                     searchCountBadge.textContent = profiles.length;
-                    showToast(`Discovered & saved ${profiles.length} alumni profiles!`, 'success');
-                    fetchSavedAlumni(); // refresh db tab badge
+                    showToast(`Discovered & saved ${profiles.length} alumni in ${latency}ms!`, 'success');
+                    fetchSavedAlumni();
                 } else {
                     const errMsg = (resData.details && resData.details.length) ? resData.details.join(', ') : (resData.message || 'Error occurred');
                     showToast(errMsg, 'error');
@@ -894,15 +1040,88 @@
         // Fetch All Saved Alumni from Database
         async function fetchSavedAlumni() {
             try {
-                const response = await fetch('/api/alumni/all?size=50');
+                const response = await fetch('/api/alumni/all?size=100');
                 if (response.ok) {
                     const resData = await response.json();
-                    const profiles = resData.data || [];
-                    dbCountBadge.textContent = profiles.length;
-                    renderAlumniCards(profiles, dbGrid, dbEmpty);
+                    savedProfilesCache = resData.data || [];
+                    dbCountBadge.textContent = savedProfilesCache.length;
+                    renderAlumniCards(savedProfilesCache, dbGrid, dbEmpty, true);
                 }
             } catch (err) {
                 console.warn('Could not fetch saved profiles:', err);
+            }
+        }
+
+        // Live Filter in Database View
+        dbFilterInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (!query) {
+                renderAlumniCards(savedProfilesCache, dbGrid, dbEmpty, true);
+                return;
+            }
+            const filtered = savedProfilesCache.filter(p => 
+                (p.name && p.name.toLowerCase().includes(query)) ||
+                (p.currentRole && p.currentRole.toLowerCase().includes(query)) ||
+                (p.university && p.university.toLowerCase().includes(query)) ||
+                (p.location && p.location.toLowerCase().includes(query)) ||
+                (p.company && p.company.toLowerCase().includes(query))
+            );
+            renderAlumniCards(filtered, dbGrid, dbEmpty, true);
+        });
+
+        // Delete Alumni Profile by ID
+        async function deleteProfile(id, name) {
+            if (!confirm(`Are you sure you want to delete ${name} from the database?`)) {
+                return;
+            }
+            try {
+                const response = await fetch(`/api/alumni/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    showToast(`Deleted ${name} from database`, 'success');
+                    fetchSavedAlumni();
+                    fetchStats();
+                } else {
+                    showToast('Failed to delete profile', 'error');
+                }
+            } catch (err) {
+                showToast('Error deleting profile: ' + err.message, 'error');
+            }
+        }
+
+        // Fetch Audit Search History
+        async function fetchHistory() {
+            try {
+                const response = await fetch('/api/alumni/history');
+                if (response.ok) {
+                    const resData = await response.json();
+                    const list = resData.data || [];
+                    historyTableBody.innerHTML = '';
+                    if (list.length === 0) {
+                        historyTableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">No search audit records yet.</td></tr>';
+                        return;
+                    }
+                    list.forEach(h => {
+                        const tr = document.createElement('tr');
+                        const dateStr = h.searchedAt ? new Date(h.searchedAt).toLocaleTimeString() : 'Just now';
+                        tr.innerHTML = `
+                            <td><i class="fa-regular fa-clock" style="color: #8c8c8c;"></i> ${dateStr}</td>
+                            <td><strong>${escapeHtml(h.university)}</strong></td>
+                            <td>${escapeHtml(h.designation)}</td>
+                            <td>${h.passoutYear ? h.passoutYear : 'Any'}</td>
+                            <td><span style="font-weight: 700; color: var(--primary);">${h.resultsCount}</span></td>
+                            <td>${h.executionTimeMs} ms</td>
+                            <td><span class="db-badge">${escapeHtml(h.provider || 'PhantomBuster')}</span></td>
+                            <td>
+                                <button class="chip" style="padding: 4px 10px;" onclick="setPreset('${escapeHtml(h.university)}', '${escapeHtml(h.designation)}', ${h.passoutYear || 'null'})">
+                                    Re-run
+                                </button>
+                            </td>
+                        `;
+                        historyTableBody.appendChild(tr);
+                    });
+                }
+            } catch (err) {
+                console.warn('Could not fetch history:', err);
             }
         }
 
@@ -929,7 +1148,7 @@
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             if (!dataMap || Object.keys(dataMap).length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">No data yet.</p>';
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">No data recorded yet.</p>';
                 return;
             }
             for (const [key, count] of Object.entries(dataMap)) {
@@ -946,7 +1165,7 @@
         }
 
         // Render Alumni Cards
-        function renderAlumniCards(profiles, gridElement, emptyElement) {
+        function renderAlumniCards(profiles, gridElement, emptyElement, isDbView = false) {
             gridElement.innerHTML = '';
             if (!profiles || profiles.length === 0) {
                 emptyElement.style.display = 'block';
@@ -960,6 +1179,12 @@
 
                 const initials = (p.name || 'LM').split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
                 const linkedinUrl = p.linkedinUrl || `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(p.name + ' ' + p.university)}`;
+
+                const deleteBtnHtml = (isDbView && p.id) ? `
+                    <button class="btn-delete-card" onclick="deleteProfile(${p.id}, '${escapeHtml(p.name)}')" title="Delete from database">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                ` : '';
 
                 card.innerHTML = `
                     <div>
@@ -998,9 +1223,12 @@
                         <span class="db-badge">
                             <i class="fa-solid fa-check"></i> Persisted in DB
                         </span>
-                        <a href="${linkedinUrl}" target="_blank" class="linkedin-btn">
-                            <i class="fa-brands fa-linkedin"></i> View Profile
-                        </a>
+                        <div class="card-actions">
+                            ${deleteBtnHtml}
+                            <a href="${linkedinUrl}" target="_blank" class="linkedin-btn">
+                                <i class="fa-brands fa-linkedin"></i> Profile
+                            </a>
+                        </div>
                     </div>
                 `;
                 gridElement.appendChild(card);
