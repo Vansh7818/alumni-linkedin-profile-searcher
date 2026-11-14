@@ -1,5 +1,6 @@
 # Alumni LinkedIn Profile Searcher
 
+[![CI](https://github.com/Vansh7818/alumni-linkedin-profile-searcher/actions/workflows/ci.yml/badge.svg)](https://github.com/Vansh7818/alumni-linkedin-profile-searcher/actions)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Java Version](https://img.shields.io/badge/Java-21%2B-orange.svg)](https://adoptium.net/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
@@ -250,14 +251,15 @@ CREATE INDEX idx_alumni_linkedin_url ON alumni_profiles(linkedin_url);
 ### Running with In-Memory Database (Zero-Configuration)
 ```bash
 # Clone the repository
-git clone <YOUR_GITHUB_REPO_URL>
-cd <REPO_DIR>
+git clone https://github.com/Vansh7818/alumni-linkedin-profile-searcher.git
+cd alumni-linkedin-profile-searcher
 
 # Run with local profile (uses in-memory database with automatic schema setup)
 java -Dspring.profiles.active=local -jar target/alumni-linkedin-searcher-1.0.0.jar
 ```
 
 Access:
+- **Interactive Web Portal**: [http://localhost:8080/](http://localhost:8080/)
 - **Swagger UI**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 - **H2 Web Console**: [http://localhost:8080/h2-console](http://localhost:8080/h2-console) (JDBC URL: `jdbc:h2:mem:alumnidb`)
 
