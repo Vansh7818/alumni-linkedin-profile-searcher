@@ -18,6 +18,8 @@ public interface AlumniProfileRepository extends JpaRepository<AlumniProfile, Lo
 
     List<AlumniProfile> findByUniversityIgnoreCase(String university);
 
+    long countByUniversityIgnoreCase(String university);
+
     @Query("SELECT a.university, COUNT(a) FROM AlumniProfile a GROUP BY a.university ORDER BY COUNT(a) DESC")
     List<Object[]> countAlumniByUniversity();
 

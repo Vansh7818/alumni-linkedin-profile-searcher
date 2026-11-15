@@ -29,6 +29,9 @@ public class AlumniDataMapper {
                 .passoutYear(entity.getPassoutYear())
                 .linkedinUrl(entity.getLinkedinUrl())
                 .company(entity.getCompany())
+                .email(entity.getEmail())
+                .skills(entity.getSkills())
+                .verificationStatus(entity.getVerificationStatus() != null ? entity.getVerificationStatus() : "SCRAPED")
                 .build();
     }
 

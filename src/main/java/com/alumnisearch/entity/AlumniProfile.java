@@ -54,6 +54,16 @@ public class AlumniProfile {
     @Column(length = 150)
     private String company;
 
+    @Column(length = 150)
+    private String email;
+
+    @Column(length = 255)
+    private String skills;
+
+    @Column(name = "verification_status", length = 50)
+    @Builder.Default
+    private String verificationStatus = "SCRAPED";
+
     @Column(name = "search_query", length = 255)
     private String searchQuery;
 

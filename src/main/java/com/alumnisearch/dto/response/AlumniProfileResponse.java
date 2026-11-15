@@ -41,4 +41,13 @@ public class AlumniProfileResponse {
 
     @Schema(description = "Current employer or organization", example = "XYZ Corp")
     private String company;
+
+    @Schema(description = "Alumni email address", example = "john.doe@alumni.xyz.edu")
+    private String email;
+
+    @Schema(description = "Key technical and professional skills", example = "Java, Spring Boot, PostgreSQL, Microservices")
+    private String skills;
+
+    @Schema(description = "Verification status", example = "VERIFIED")
+    private String verificationStatus;
 }

@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/alumni")
 @RequiredArgsConstructor
-@Tag(name = "Alumni Profile Searcher", description = "Operations for searching, persisting, exporting, and querying LinkedIn alumni profiles")
+@Tag(name = "Alumni Profile Searcher", description = "Operations for searching, persisting, importing, exporting, and managing alumni profiles")
 public class AlumniSearchController {
 
     private final AlumniService alumniService;
@@ -83,24 +84,6 @@ public class AlumniSearchController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "502", description = "PhantomBuster API communication failure")
     })
     public ResponseEntity<ApiResponse<List<AlumniProfileResponse>>> searchAlumni(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Search parameters specifying target educational institution, designation, and optional year",
-                    required = true,
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AlumniSearchRequest.class),
-                            examples = @ExampleObject(
-                                    name = "SampleSearchRequest",
-                                    value = """
-                                            {
-                                              "university": "University of XYZ",
-                                              "designation": "Software Engineer",
-                                              "passoutYear": 2020
-                                            }
-                                            """
-                            )
-                    )
-            )
             @Valid @RequestBody AlumniSearchRequest request) {
 
         log.info("Received search request: university='{}', designation='{}', passoutYear={}",
@@ -110,14 +93,35 @@ public class AlumniSearchController {
         return ResponseEntity.ok(ApiResponse.success(profiles));
     }
 
+    @PostMapping
+    @Operation(summary = "Manually Add an Alumni Profile", description = "Allows universities or verified users to manually insert alumni records directly into the database")
+    public ResponseEntity<ApiResponse<AlumniProfileResponse>> createManualAlumni(@RequestBody AlumniProfileResponse request) {
+        AlumniProfileResponse created = alumniService.createManualAlumni(request);
+        return ResponseEntity.ok(ApiResponse.success(created, "Alumni profile added successfully"));
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Bulk Import Alumni via CSV Spreadsheet", description = "Allows universities to upload spreadsheets containing student/alumni rosters for batch ingestion")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> importAlumniCsv(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> result = alumniService.importAlumniFromCsv(file);
+        return ResponseEntity.ok(ApiResponse.success(result, "Bulk alumni import processed successfully"));
+    }
+
+    @GetMapping(value = "/template", produces = "text/csv")
+    @Operation(summary = "Download Sample CSV Import Template")
+    public ResponseEntity<byte[]> downloadTemplate() {
+        byte[] template = alumniService.getCsvTemplate();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"alumni_import_template.csv\"")
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(template);
+    }
+
     @GetMapping("/all")
     @Operation(
             summary = "Get All Saved Alumni Profiles",
             description = "Retrieves all alumni profiles stored in the database. Supports pagination and sorting."
     )
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "List of saved alumni profiles retrieved successfully")
-    })
     public ResponseEntity<ApiResponse<List<AlumniProfileResponse>>> getAllSavedAlumni(
             @Parameter(description = "Zero-based page index", example = "0")
             @RequestParam(defaultValue = "0") int page,
@@ -136,15 +140,8 @@ public class AlumniSearchController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get Saved Alumni Profile by ID", description = "Retrieves a specific alumni profile by its unique database ID")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Alumni profile found"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Profile not found")
-    })
-    public ResponseEntity<ApiResponse<AlumniProfileResponse>> getAlumniById(
-            @Parameter(description = "Alumni database ID", example = "1")
-            @PathVariable Long id) {
-
+    @Operation(summary = "Get Saved Alumni Profile by ID")
+    public ResponseEntity<ApiResponse<AlumniProfileResponse>> getAlumniById(@PathVariable Long id) {
         AlumniProfileResponse profile = alumniService.getAlumniById(id);
         return ResponseEntity.ok(ApiResponse.success(profile));
     }
@@ -159,14 +156,24 @@ public class AlumniSearchController {
         return ResponseEntity.ok(ApiResponse.success(updated, "Profile updated successfully"));
     }
 
+    @PatchMapping("/{id}/verify")
+    @Operation(summary = "Set Verification Status", description = "Sets status to VERIFIED, PENDING, or UNVERIFIED")
+    public ResponseEntity<ApiResponse<AlumniProfileResponse>> updateVerificationStatus(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "VERIFIED") String status) {
+
+        AlumniProfileResponse updated = alumniService.updateVerificationStatus(id, status);
+        return ResponseEntity.ok(ApiResponse.success(updated, "Status updated to " + status));
+    }
+
     @GetMapping("/filter")
     @Operation(summary = "Filter Saved Alumni Profiles", description = "Dynamic multi-criteria search over saved alumni records")
     public ResponseEntity<ApiResponse<List<AlumniProfileResponse>>> filterAlumni(
-            @Parameter(description = "University name filter") @RequestParam(required = false) String university,
-            @Parameter(description = "Designation filter") @RequestParam(required = false) String designation,
-            @Parameter(description = "Passout year filter") @RequestParam(required = false) Integer passoutYear,
-            @Parameter(description = "Location filter") @RequestParam(required = false) String location,
-            @Parameter(description = "Alumni name filter") @RequestParam(required = false) String name,
+            @RequestParam(required = false) String university,
+            @RequestParam(required = false) String designation,
+            @RequestParam(required = false) Integer passoutYear,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size) {
 
@@ -185,21 +192,21 @@ public class AlumniSearchController {
     }
 
     @GetMapping("/stats")
-    @Operation(summary = "Alumni Aggregation Statistics", description = "Returns summary analytics: total alumni, top universities, roles, and graduation years")
+    @Operation(summary = "Alumni Aggregation Statistics")
     public ResponseEntity<ApiResponse<AlumniStatsResponse>> getStats() {
         AlumniStatsResponse stats = alumniService.getAlumniStats();
         return ResponseEntity.ok(ApiResponse.success(stats));
     }
 
     @GetMapping("/history")
-    @Operation(summary = "Recent Search Audit History", description = "Returns the 20 most recent alumni searches and execution durations")
+    @Operation(summary = "Recent Search Audit History")
     public ResponseEntity<ApiResponse<List<SearchHistoryResponse>>> getSearchHistory() {
         List<SearchHistoryResponse> history = alumniService.getSearchHistory();
         return ResponseEntity.ok(ApiResponse.success(history));
     }
 
     @GetMapping(value = "/export", produces = "text/csv")
-    @Operation(summary = "Export Alumni to CSV", description = "Streams all persisted alumni records as a CSV file for ATS/Spreadsheet analysis")
+    @Operation(summary = "Export Alumni to CSV", description = "Streams all persisted alumni records as a CSV file for ATS/Spreadsheets")
     public ResponseEntity<byte[]> exportCsv() {
         byte[] csvData = alumniService.exportAlumniCsv();
         return ResponseEntity.ok()
@@ -209,14 +216,14 @@ public class AlumniSearchController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete Saved Alumni Profile", description = "Deletes an alumni record by its database ID")
+    @Operation(summary = "Delete Saved Alumni Profile")
     public ResponseEntity<ApiResponse<Void>> deleteAlumni(@PathVariable Long id) {
         alumniService.deleteAlumni(id);
         return ResponseEntity.ok(ApiResponse.success(null, "Alumni profile " + id + " deleted successfully"));
     }
 
     @PostMapping("/webhook")
-    @Operation(summary = "PhantomBuster Webhook Handler", description = "Receives asynchronous execution callbacks when a Phantom completes")
+    @Operation(summary = "PhantomBuster Webhook Handler")
     public ResponseEntity<ApiResponse<Map<String, Object>>> handleWebhook(@RequestBody(required = false) Map<String, Object> payload) {
         log.info("Received PhantomBuster webhook payload: {}", payload);
         return ResponseEntity.ok(ApiResponse.success(Map.of("status", "received"), "Webhook processed"));
