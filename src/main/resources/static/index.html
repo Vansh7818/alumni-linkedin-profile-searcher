@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a66c2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Alumni Intelligence & Placement Platform | Enterprise Edition</title>
     <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -733,9 +736,222 @@
         .toast.success { background: #057642; }
         .toast.error { background: #b91c1c; }
 
+        /* Mobile Components */
+        .mobile-header-actions {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover, .btn-icon:active {
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .btn-icon-primary {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: #bfdbfe;
+        }
+
+        /* Mobile Bottom App Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            display: none;
+            justify-content: space-around;
+            align-items: center;
+            height: calc(62px + env(safe-area-inset-bottom, 0px));
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            z-index: 999;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .mobile-nav-item {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            padding: 8px 12px;
+            flex: 1;
+            transition: all 0.2s;
+        }
+
+        .mobile-nav-item i {
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        .mobile-nav-item.active i {
+            transform: scale(1.15);
+        }
+
+        .mobile-badge {
+            position: absolute;
+            top: 4px;
+            right: calc(50% - 18px);
+            background: var(--primary);
+            color: white;
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 10px;
+            line-height: 1.2;
+        }
+
+        /* Mobile Action Row for Action Sheet */
+        .mobile-action-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .mobile-action-row:hover, .mobile-action-row:active {
+            background: #f1f5f9;
+            transform: translateX(3px);
+            border-color: #cbd5e1;
+        }
+
+        .mobile-action-row .action-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .mobile-action-row .action-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .mobile-action-row .action-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Responsive Breakpoints */
         @media (max-width: 900px) {
-            .form-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; gap: 10px; }
             .header-actions { display: none; }
+            .mobile-header-actions { display: flex; }
+            .mobile-bottom-nav { display: flex; }
+            body { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+            .sub-nav { display: none; } /* Mobile bottom tab bar takes over */
+            .main-container { padding: 0 16px; margin: 16px auto; }
+            .hero-card { padding: 24px 20px; border-radius: 14px; margin-bottom: 20px; }
+            .hero-card h2 { font-size: 21px; }
+            .hero-card p { font-size: 13px; margin-bottom: 16px; }
+            .grid-cards { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+            .kpi-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .kpi-card { padding: 14px; gap: 10px; }
+            .kpi-icon { width: 40px; height: 40px; font-size: 18px; }
+            .kpi-info .kpi-num { font-size: 22px; }
+            .charts-grid { grid-template-columns: 1fr; gap: 16px; }
+            .table-card { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .enterprise-table th, .enterprise-table td { padding: 12px 14px; font-size: 12.5px; white-space: nowrap; }
+            .modal-overlay { align-items: flex-end; padding: 0; }
+            .modal-card {
+                width: 100%;
+                max-width: 100%;
+                border-radius: 24px 24px 0 0;
+                max-height: 88vh;
+                margin: 0;
+                animation: sheetUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .modal-body { padding: 20px 18px; gap: 14px; }
+            .modal-footer {
+                padding: 14px 18px calc(14px + env(safe-area-inset-bottom, 0px));
+                flex-direction: column;
+                gap: 8px;
+            }
+            .modal-footer .btn { width: 100%; height: 46px; justify-content: center; font-size: 14.5px; }
+            .form-input { font-size: 16px; } /* Strictly prevents iOS Safari viewport auto-zooming */
+        }
+
+        @keyframes sheetUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 10px 14px; }
+            .brand { gap: 10px; }
+            .brand-icon { width: 36px; height: 36px; font-size: 17px; border-radius: 8px; }
+            .brand-text h1 { font-size: 15px; }
+            .brand-text p { display: none; }
+            .hero-card { padding: 18px 14px; margin-bottom: 16px; }
+            .hero-card h2 { font-size: 18px; }
+            .hero-card p { font-size: 12px; margin-bottom: 12px; }
+            .search-box-inner { padding: 12px; border-radius: 10px; }
+            .btn-search-hero { width: 100%; height: 48px; font-size: 15px; }
+            .chip-bar { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+            .chip-pill { flex-shrink: 0; font-size: 11.5px; padding: 4px 10px; }
+            .grid-cards { grid-template-columns: 1fr; gap: 12px; }
+            .card { padding: 16px; }
+            .name-role h4 { font-size: 15px; }
+            .role-text { font-size: 12.5px; }
+            .quote-box { font-size: 12px; padding: 6px 10px; }
+            .section-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+            .toolbar-actions { flex-direction: column; width: 100%; }
+            .toolbar-actions .input-group { width: 100% !important; }
+            .toolbar-actions .btn { width: 100%; justify-content: center; height: 42px; }
+            .toast { left: 14px; right: 14px; bottom: calc(75px + env(safe-area-inset-bottom, 0px)); }
         }
     </style>
 </head>
@@ -769,6 +985,18 @@
             </a>
             <a href="/swagger-ui/index.html" target="_blank" class="btn">
                 <i class="fa-solid fa-code"></i> Swagger UI
+            </a>
+        </div>
+
+        <div class="mobile-header-actions">
+            <button class="btn-icon btn-icon-primary" onclick="openModal('addAlumniModal')" title="Add Alumni">
+                <i class="fa-solid fa-user-plus"></i>
+            </button>
+            <button class="btn-icon" onclick="openModal('importModal')" title="Bulk Import">
+                <i class="fa-solid fa-file-arrow-up"></i>
+            </button>
+            <a href="/swagger-ui/index.html" target="_blank" class="btn-icon" title="Swagger UI">
+                <i class="fa-solid fa-code"></i>
             </a>
         </div>
     </header>
@@ -950,7 +1178,7 @@
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="charts-grid">
                 <div class="card">
                     <h4 style="font-size: 15px; font-weight: 800; margin-bottom: 16px;">Top Institutions by Alumni Count</h4>
                     <div id="chartUnisList"></div>
@@ -1117,6 +1345,88 @@
         </div>
     </div>
 
+    <!-- MODAL 4: MOBILE QUICK ACTIONS SHEET -->
+    <div id="quickActionsModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Quick Actions</h3>
+                <button class="close-btn" onclick="closeModal('quickActionsModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="gap: 12px;">
+                <button class="mobile-action-row" onclick="closeModal('quickActionsModal'); openModal('addAlumniModal');">
+                    <div class="action-icon" style="background: var(--primary-light); color: var(--primary);">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div class="action-info">
+                        <h4>Add Alumni Profile</h4>
+                        <p>Manually insert candidate details to database</p>
+                    </div>
+                </button>
+                <button class="mobile-action-row" onclick="closeModal('quickActionsModal'); openModal('importModal');">
+                    <div class="action-icon" style="background: var(--success-bg); color: var(--success);">
+                        <i class="fa-solid fa-file-arrow-up"></i>
+                    </div>
+                    <div class="action-info">
+                        <h4>Bulk CSV Import</h4>
+                        <p>Upload a roster spreadsheet (.csv)</p>
+                    </div>
+                </button>
+                <button class="mobile-action-row" onclick="closeModal('quickActionsModal'); openModal('addUniModal');">
+                    <div class="action-icon" style="background: var(--purple-light); color: var(--purple);">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div class="action-info">
+                        <h4>Register University</h4>
+                        <p>Onboard an educational institution</p>
+                    </div>
+                </button>
+                <a href="/api/alumni/export" class="mobile-action-row" style="text-decoration: none; color: inherit;">
+                    <div class="action-icon" style="background: #f1f5f9; color: var(--text-main);">
+                        <i class="fa-solid fa-download"></i>
+                    </div>
+                    <div class="action-info">
+                        <h4>Export Database CSV</h4>
+                        <p>Download full student roster leads</p>
+                    </div>
+                </a>
+                <a href="/swagger-ui/index.html" target="_blank" class="mobile-action-row" style="text-decoration: none; color: inherit;">
+                    <div class="action-icon" style="background: var(--warning-bg); color: var(--warning);">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div class="action-info">
+                        <h4>Interactive Swagger UI</h4>
+                        <p>Open OpenAPI 3 API explorer</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile App Bottom Navigation Bar -->
+    <nav class="mobile-bottom-nav">
+        <button class="mobile-nav-item active" id="mobTabSearch" onclick="switchNav('search')">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+        </button>
+        <button class="mobile-nav-item" id="mobTabDirectory" onclick="switchNav('directory')">
+            <i class="fa-solid fa-users"></i>
+            <span>Alumni</span>
+            <span class="mobile-badge" id="mobBadgeDbCount">0</span>
+        </button>
+        <button class="mobile-nav-item" id="mobTabUniversities" onclick="switchNav('universities')">
+            <i class="fa-solid fa-building-columns"></i>
+            <span>Colleges</span>
+        </button>
+        <button class="mobile-nav-item" id="mobTabAnalytics" onclick="switchNav('analytics')">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Stats</span>
+        </button>
+        <button class="mobile-nav-item" onclick="openModal('quickActionsModal')">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Actions</span>
+        </button>
+    </nav>
+
     <!-- Toast Notification -->
     <div id="toast" class="toast">
         <i id="toastIcon" class="fa-solid fa-circle-check"></i>
@@ -1136,30 +1446,37 @@
         // Navigation Switching
         function switchNav(nav) {
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.mobile-nav-item').forEach(t => t.classList.remove('active'));
             ['Search', 'Directory', 'Universities', 'Analytics', 'History'].forEach(v => {
-                document.getElementById('view' + v).style.display = 'none';
+                const el = document.getElementById('view' + v);
+                if (el) el.style.display = 'none';
             });
 
             if (nav === 'search') {
-                document.getElementById('tabSearch').classList.add('active');
+                document.getElementById('tabSearch')?.classList.add('active');
+                document.getElementById('mobTabSearch')?.classList.add('active');
                 document.getElementById('viewSearch').style.display = 'block';
             } else if (nav === 'directory') {
-                document.getElementById('tabDirectory').classList.add('active');
+                document.getElementById('tabDirectory')?.classList.add('active');
+                document.getElementById('mobTabDirectory')?.classList.add('active');
                 document.getElementById('viewDirectory').style.display = 'block';
                 fetchSavedAlumni();
             } else if (nav === 'universities') {
-                document.getElementById('tabUniversities').classList.add('active');
+                document.getElementById('tabUniversities')?.classList.add('active');
+                document.getElementById('mobTabUniversities')?.classList.add('active');
                 document.getElementById('viewUniversities').style.display = 'block';
                 fetchUniversities();
             } else if (nav === 'analytics') {
-                document.getElementById('tabAnalytics').classList.add('active');
+                document.getElementById('tabAnalytics')?.classList.add('active');
+                document.getElementById('mobTabAnalytics')?.classList.add('active');
                 document.getElementById('viewAnalytics').style.display = 'block';
                 fetchStats();
             } else if (nav === 'history') {
-                document.getElementById('tabHistory').classList.add('active');
+                document.getElementById('tabHistory')?.classList.add('active');
                 document.getElementById('viewHistory').style.display = 'block';
                 fetchHistory();
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Quick Preset Runner
@@ -1219,6 +1536,8 @@
                     const data = await res.json();
                     dbProfilesCache = data.data || [];
                     document.getElementById('badgeDbCount').textContent = dbProfilesCache.length;
+                    const mobBadge = document.getElementById('mobBadgeDbCount');
+                    if (mobBadge) mobBadge.textContent = dbProfilesCache.length;
                     renderCards(dbProfilesCache, 'directoryGrid', 'directoryEmpty', true);
                 }
             } catch (err) {
