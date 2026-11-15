@@ -1,3 +1,6 @@
+cloudflared.exe
+*.exe
+
 # Compiled class file
 target/
 *.class
